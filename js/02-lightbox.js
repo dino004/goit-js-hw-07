@@ -13,7 +13,7 @@ function getGalleryItemImage(items) {
   return items
     .map(
       ({ preview, original, description }) => `<li class="gallery__item">
-      <a class="gallery__link" href="${original}" data-caption="${description}">
+      <a class="gallery__link" href="${original}">
         <img
           class="gallery__image"
           src="${preview}"
@@ -25,13 +25,7 @@ function getGalleryItemImage(items) {
     .join("");
 }
 
-gallery.addEventListener("click", onModalFullImage);
-
-function onModalFullImage(e) {
-  e.preventDefault();
-  if (e.target.nodeName !== "IMG") {
-    return;
-  }
-  let lightbox = new SimpleLightbox(".gallery a");
-  lightbox.on("show.simplelightbox");
-}
+let lightbox = new SimpleLightbox(".gallery a", {
+  captionsData: "alt",
+  captionDelay: "250",
+});

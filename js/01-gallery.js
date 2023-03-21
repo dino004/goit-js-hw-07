@@ -33,15 +33,23 @@ function onModalFullImage(e) {
   if (e.target.nodeName !== "IMG") {
     return;
   }
-  const modal = basicLightbox.create(`<img src="${e.target.dataset.source}"/>`);
+
+  const originalSizeImg = e.target.dataset.source;
+
+  const modal = basicLightbox.create(`<img src="${originalSizeImg}"/>`, {
+    onShow: (modal) => {
+      window.addEventListener("keydown", onClosedModal);
+    },
+    onClose: (modal) => {
+      window.removeEventListener("keydown", onClosedModal);
+    },
+  });
   modal.show();
 
-  gallery.addEventListener("keydown", onClosedModal);
-
   function onClosedModal(e) {
-    if (e.code === "Escape") {
-      modal.close();
+    if (e.code !== "Escape") {
       return;
     }
+    modal.close();
   }
 }
